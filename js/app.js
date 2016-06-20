@@ -62,47 +62,11 @@ angular.module('starter', ['ionic', 'angular.filter', 'starter.controllers','sta
       }
     }
   })
-  .state('app.login', {
-    url: '/login',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/login.html',
-        controller: 'LoginCtrl'
-      }
-    }
-  })
-  .state('app.signup', {
-    url: '/signup',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/signup.html',
-        controller: 'SignupCtrl'
-      }
-    }
-  })
-  .state('app.privacypolicy', {
-    url: '/privacypolicy',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/privacypolicy.html',
-        controller: 'PrivacyCtrl'
-      }
-    }
-  })
     .state('app.main', {
       url: '/main',
       views: {
         'menuContent': {
           templateUrl: 'templates/main.html',
-          controller: 'MainCtrl'
-        }
-      }
-    })
-    .state('app.quick', {
-      url: '/quick',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/quick.html',
           controller: 'MainCtrl'
         }
       }
@@ -113,42 +77,6 @@ angular.module('starter', ['ionic', 'angular.filter', 'starter.controllers','sta
         'menuContent': {
           templateUrl: 'templates/drug.html',
           controller: 'DrugCtrl'
-        }
-      }
-    })
-    .state('app.trade', {
-      url: '/trade',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/trade.html',
-          controller: 'MainCtrl'
-        }
-      }
-    })
-    .state('app.activeingredient', {
-      url: '/activeingredient',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/activeingredient.html',
-          controller: 'MainCtrl'
-        }
-      }
-    })
-    .state('app.price', {
-      url: '/price',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/price.html',
-          controller: 'MainCtrl'
-        }
-      }
-    })
-    .state('app.company', {
-      url: '/company',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/company.html',
-          controller: 'MainCtrl'
         }
       }
     })
@@ -187,7 +115,35 @@ angular.module('starter', ['ionic', 'angular.filter', 'starter.controllers','sta
           controller: 'DeveloperCtrl'
         }
       }
-    });
+    })
+    /*
+    .state('app.login', {
+      url: '/login',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/login.html',
+          controller: 'LoginCtrl'
+        }
+      }
+    })
+    .state('app.signup', {
+      url: '/signup',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/signup.html',
+          controller: 'SignupCtrl'
+        }
+      }
+    })
+    .state('app.privacypolicy', {
+      url: '/privacypolicy',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/privacypolicy.html',
+          controller: 'PrivacyCtrl'
+        }
+      }
+    })*/;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/intro');
 });

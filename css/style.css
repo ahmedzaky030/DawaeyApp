@@ -103,19 +103,17 @@ ion-tabs.tabs-striped.tabs-color-active-dark .tab-item.tab-item-active, ion-tabs
 }
 /*login*/
 .loginview {
-  background: url(../img/bg2.png) no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+  background: #0db7ab;
 }
+.submitbtn {
+  background: #0db7ab !important;
+  color: #fff;
+  border-radius: 50px;
+}
+
 /*signup*/
 .signupview {
-  background: url(../img/bg1.png) no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+  background: #0db7ab;
 }
 .signupform {
   background: #fff;
@@ -128,7 +126,7 @@ ion-tabs.tabs-striped.tabs-color-active-dark .tab-item.tab-item-active, ion-tabs
 }
 /*sponsor*/
 .sponsorview {
-  background: #FBE9E7;
+  background: #eff3f3;
 }
 .sponsorimg {
   width: 20%;
@@ -185,8 +183,14 @@ ion-tabs.tabs-striped.tabs-color-active-dark .tab-item.tab-item-active, ion-tabs
   margin-bottom: -10px;
 }
 .mainview {
-  background: #ffebee;
+  background: #eff3f3;
 }
+/*.moreinfobtn {
+  color: #fff !important;
+  background: #0db7ab;
+  border-radius: 50px;
+  height: 20px !important;
+}*/
 footer {
   width: 100%;
   background: black;
@@ -215,19 +219,50 @@ footer h1 {
   margin-left: 20px;
   height: 150px;
   color: #fff;
+  margin-top: 95%;
+}
+.introtext2 {
+  margin-right: 20px;
+  margin-left: 20px;
+  height: 150px;
+  color: #fff;
+  margin-top: 63px;
 }
 .white {
   color: #fff;
 }
 
 .introslider1 {
-  background: #80CBC4 !important;
+
+  background: url(../img/introbg1.png) no-repeat center center fixed ;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 .introslider2 {
-  background: #80DEEA !important;
+  background: #0db7ab !important;
+}
+.dropdownimg{
+  width: 50%;
 }
 .introslider3 {
-  background: #80CBC4 !important;
+  background: url(../img/introbg2.png) no-repeat center center fixed ;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.textshadow {
+  text-shadow: 2px 2px 2px rgba(150, 150, 150, 1);
+}
+.goenter {
+  margin-top: 200px !important;
+}
+.introbtn {
+  color: #0db7ab;
+  background: #fff;
+  border-radius: 50px;
 }
 .slider {
   height: 100%;
@@ -279,4 +314,7 @@ footer h1 {
   margin-left: auto;
   margin-right: auto;
   display: block;
+}
+.slider-pager .slider-pager-page {
+  color: #fff;
 }

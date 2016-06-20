@@ -1,10 +1,9 @@
 <ion-view view-title="البحث">
-  <ion-content>
+  <ion-content class="mainview">
     <div class="shadow">
       <label class="item item-input lablestyle">
         <select class="selectoptions" name="singleSelect" ng-model="mySelect" ng-change="showSelectValue(mySelect)">
         <option value="">اختر نوع البحث</option> <!-- not selected / blank option -->
-        <option value="quick">البحث السريع</option>
         <option value="trade">البحث بالاسم التجاري</option>
         <option value="activeingredient">البحث بالمادة الفعالة</option>
         <option value="price">البحث بالسعر</option>
@@ -15,12 +14,12 @@
 
       <label class="item item-input">
         <i class="icon ion-search placeholder-icon"></i>
-        <input type="search" ng-model="searchit" ng-model-options="{debounce: 500}" placeholder="Search here" ng-focus="searchFocused = true" ng-blur="searchFocused = false">
+        <input type="search" ng-model="search[filterByVar]" ng-model-options="{debounce: 500}" placeholder="Search here" ng-focus="searchFocused = true" ng-blur="searchFocused = false">
       </label>
     </div>
     <ion-list>
       </ion-item>
-      <ion-item class="item-light item-avatar card item-complex" ng-repeat="drug in drugs | filter:searchit| orderBy: orderByVar | limitTo:numberOfItemsToDisplay" ng-href="#/app/drug/{{drug.id}}">
+      <ion-item class="item-light item-avatar card item-complex" ng-repeat="drug in drugs | filter:search | orderBy: filterByVar | limitTo:numberOfItemsToDisplay" ng-href="#/app/drug/{{drug.id}}">
         <img ng-src="{{drug.pic}}" alt=" ">
         <h2 class="tradename">{{drug.tradename}}</h2>
         <p class="chname">{{drug.activeingredient}}</p>

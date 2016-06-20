@@ -1,18 +1,6 @@
 <ion-view view-title="البحث التقريبي">
   <ion-content>
     <div class="shadow">
-      <label class="item item-input lablestyle">
-        <select class="selectoptions" name="singleSelect" ng-model="mySelect" ng-change="showSelectValue(mySelect)">
-        <option value="">اختر نوع البحث</option> <!-- not selected / blank option -->
-        <option value="quick">البحث السريع</option>
-        <option value="trade">البحث بالاسم التجاري</option>
-        <option value="activeingredient">البحث بالمادة الفعالة</option>
-        <option value="price">البحث بالسعر</option>
-        <option value="company">البحث بالشركة</option>
-        <option value="approximate">البحث التقريبي</option>
-      </select>
-      </label>
-
       <label class="item item-input">
         <i class="icon ion-search placeholder-icon"></i>
         <input type="search" ng-model="searchit" ng-model-options="{debounce: 500}" placeholder="Search here" ng-focus="searchFocused = true" ng-blur="searchFocused = false">
