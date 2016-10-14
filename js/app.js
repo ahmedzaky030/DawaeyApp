@@ -4,46 +4,10 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'angular.filter', 'starter.controllers','starter.services'])
+angular.module('starter', ['ionic', 'angular.filter', 'starter.controllers','starter.services','ionic.cloud'])
 
-.run(function($rootScope, $ionicPlatform, $ionicHistory) {
-  $ionicPlatform.registerBackButtonAction(function(e){
-    if ($rootScope.backButtonPressedOnceToExit) {
-      ionic.Platform.exitApp();
-    }
 
-    else if ($ionicHistory.backView()) {
-      $ionicHistory.goBack();
-    }
-    else {
-      $rootScope.backButtonPressedOnceToExit = true;
-      window.plugins.toast.showShortCenter(
-        "Press back button again to exit",function(a){},function(b){}
-      );
-      setTimeout(function(){
-        $rootScope.backButtonPressedOnceToExit = false;
-      },2000);
-    }
-    e.preventDefault();
-    return false;
-  },101);
-
-  $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if (window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      cordova.plugins.Keyboard.disableScroll(true);
-
-    }
-    if (window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
-    }
-  });
-})
-
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicCloudProvider) {
   $stateProvider
 
     .state('app', {
@@ -146,4 +110,58 @@ angular.module('starter', ['ionic', 'angular.filter', 'starter.controllers','sta
     })*/;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/intro');
+  $ionicCloudProvider.init({
+      'core': {
+        'app_id': '8600d6dc'
+      },
+      'push':{
+        'sender_id': '1061030166084',
+        'pluginConfig': {
+          'ios': {
+            'badge': true,
+            'sound': true
+          },
+          'android': {
+            'iconColor': '#FF9900'
+          }
+        }
+      }
+    });
+
+})
+.run(function($rootScope, $ionicPlatform, $ionicHistory) {
+  $ionicPlatform.registerBackButtonAction(function(e){
+    if ($rootScope.backButtonPressedOnceToExit) {
+      ionic.Platform.exitApp();
+    }
+
+    else if ($ionicHistory.backView()) {
+      $ionicHistory.goBack();
+    }
+    else {
+      $rootScope.backButtonPressedOnceToExit = true;
+      window.plugins.toast.showShortCenter(
+        "Press back button again to exit",function(a){},function(b){}
+      );
+      setTimeout(function(){
+        $rootScope.backButtonPressedOnceToExit = false;
+      },2000);
+    }
+    e.preventDefault();
+    return false;
+  },101);
+
+  $ionicPlatform.ready(function() {
+    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+    // for form inputs)
+    if (window.cordova && window.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      cordova.plugins.Keyboard.disableScroll(true);
+
+    }
+    if (window.StatusBar) {
+      // org.apache.cordova.statusbar required
+      StatusBar.styleDefault();
+    }
+  });
 });
