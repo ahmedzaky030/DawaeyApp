@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-  .controller('IntroCtrl', function($scope, $state, $ionicSlideBoxDelegate, $interval, $timeout) {
+  .controller('IntroCtrl', function($scope, $state, $ionicSlideBoxDelegate, $interval, $timeout,$ionicHistory) {
 
     // Called to navigate to the main app
     $scope.signUp = function() {
@@ -7,6 +7,8 @@ angular.module('starter.controllers', [])
     };
     $scope.startApp = function() {
       $state.go('app.main');
+      window.localStorage['didTutorial'] = true;
+
       // if (localStorage.logged == "true") {
       //   $state.go('app.main');
       // }else{
@@ -52,19 +54,17 @@ angular.module('starter.controllers', [])
       i++;
       $scope.safeApply();
     }, 100);
-    // $timeout(function() {
-    //   $scope.swipe = true;
-    // }, 10000);
 
-    // redirect
-    var visited = localStorage.getItem('visited');
-    if (visited == "You have visited this page before") {
-      $state.go('app.main')
-    } else {
-      console.log("Stay here");
+
+    // Check if the user already did the tutorial and skip it if so
+    if (window.localStorage['didTutorial'] === "true") {
+      console.log('Skip intro');
+      $ionicHistory.nextViewOptions({
+              disableAnimate: true,
+              disableBack: true
+            });
+      $state.go('app.main');
     }
-
-    localStorage.setItem('visited', 'You have visited this page before');
   })
   .controller('MainCtrl', function($scope, $state, $filter, $stateParams, $http, $ionicLoading, SearchService, $ionicPush) {
     //Start here
@@ -80,6 +80,8 @@ angular.module('starter.controllers', [])
         $scope.numberOfItemsToDisplay += 10; // load number of more items
       $scope.$broadcast('scroll.infiniteScrollComplete')
     };
+
+
     $scope.search = {};
     $scope.filterByVar = "tradename";
     $scope.showSelectValue = function(mySelect) {
@@ -108,9 +110,9 @@ angular.module('starter.controllers', [])
       console.log('Token saved:', t.token);
     });
     $scope.$on('cloud:push:notification', function(event, data) {
-  var msg = data.message;
-  alert(msg.title + ': ' + msg.text);
-});
+      var msg = data.message;
+      alert(msg.title + ': ' + msg.text);
+    });
   })
 
 .controller('AppCtrl', function($scope) {})
@@ -206,6 +208,37 @@ angular.module('starter.controllers', [])
         }
       }
     });
+
+    $scope.similars = [];
+
+    function getSimilars() {
+      var arr = []
+      $scope.similars = [];
+      DrugService.GetDrug().then(function(drugs) {
+
+        for (var i = 0; i < drugs.length; i++) {
+          if (drugs[i].id == id) {
+            $scope.drug = drugs[i];
+          }
+        }
+        arr.push($scope.drug.activeingredient)
+        for (var i = 0; i < drugs.length; i++) {
+          if (arr == drugs[i].activeingredient) {
+            var obj = {
+              id: drugs[i].id,
+              tradename: drugs[i].tradename
+            }
+            $scope.similars.push(obj)
+            console.log($scope.similars);
+          }
+        }
+
+      });
+
+    }
+    getSimilars();
+
+
 
   })
   .controller('PartenersCtrl', function($scope, $stateParams) {
