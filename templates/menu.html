@@ -16,18 +16,22 @@
     <ion-header-bar class="bar-stable">
       <h1 class="title">القائمة</h1>
     </ion-header-bar>
-    <ion-content ng-controller="MenuCtrl">
+    <ion-content class="sidemenu" ng-controller="MenuCtrl">
       <ion-list class="menulist">
-        <ion-item menu-close href="#/app/main">
+        <ion-item menu-close class="item-icon-right sidemenuitem" href="#/app/main">
+          <i class = "icon icon ion-home"></i>
           الرئيسية
         </ion-item>
-        <ion-item menu-close href="#/app/partners">
+        <ion-item menu-close class="item-icon-right sidemenuitem" href="#/app/partners">
+          <i class = "icon icon ion-person-stalker"></i>
           شركاؤنا
         </ion-item>
-        <ion-item menu-close href="#/app/sponsors">
+        <ion-item menu-close class="item-icon-right sidemenuitem" href="#/app/sponsors">
+          <i class = "icon icon ion-cash"></i>
           الممولين
         </ion-item>
-        <ion-item menu-close href="#/app/developer">
+        <ion-item menu-close class="item-icon-right sidemenuitem" href="#/app/developer">
+          <i class = "icon icon ion-code"></i>
           عن المطور
         </ion-item>
         <!-- <ion-item menu-close ng-click="logOut()">

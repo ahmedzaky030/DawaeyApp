@@ -79,37 +79,15 @@ angular.module('starter', ['ionic', 'angular.filter', 'starter.controllers','sta
           controller: 'DeveloperCtrl'
         }
       }
-    })
-    /*
-    .state('app.login', {
-      url: '/login',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/login.html',
-          controller: 'LoginCtrl'
-        }
-      }
-    })
-    .state('app.signup', {
-      url: '/signup',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/signup.html',
-          controller: 'SignupCtrl'
-        }
-      }
-    })
-    .state('app.privacypolicy', {
-      url: '/privacypolicy',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/privacypolicy.html',
-          controller: 'PrivacyCtrl'
-        }
-      }
-    })*/;
+    });
+
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/intro');
+  if (localStorage.visitedIntro) {
+    $urlRouterProvider.otherwise('/app/main');
+
+  }else{
+    $urlRouterProvider.otherwise('/app/intro');
+  }
   $ionicCloudProvider.init({
       'core': {
         'app_id': '8600d6dc'

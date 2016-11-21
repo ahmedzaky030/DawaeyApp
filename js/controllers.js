@@ -1,20 +1,13 @@
 angular.module('starter.controllers', [])
   .controller('IntroCtrl', function($scope, $state, $ionicSlideBoxDelegate, $interval, $timeout,$ionicHistory) {
-
-    // Called to navigate to the main app
-    $scope.signUp = function() {
-      $state.go('app.signup');
-    };
     $scope.startApp = function() {
       $state.go('app.main');
-      window.localStorage['didTutorial'] = true;
-
-      // if (localStorage.logged == "true") {
-      //   $state.go('app.main');
-      // }else{
-      //   $state.go('app.login');
-      // }
+      //storage that user has visted intro once
+      localStorage.visitedIntro = true
     };
+
+
+
     $scope.next = function() {
       $ionicSlideBoxDelegate.next();
     };
@@ -26,6 +19,10 @@ angular.module('starter.controllers', [])
     $scope.slideChanged = function(index) {
       $scope.slideIndex = index;
     };
+
+
+
+
     $scope.safeApply = function(fn) {
       var phase = this.$root.$$phase;
       if (phase == '$apply' || phase == '$digest') {
@@ -54,56 +51,41 @@ angular.module('starter.controllers', [])
       i++;
       $scope.safeApply();
     }, 100);
-
-
-    // Check if the user already did the tutorial and skip it if so
-    if (window.localStorage['didTutorial'] === "true") {
-      console.log('Skip intro');
-      $ionicHistory.nextViewOptions({
-              disableAnimate: true,
-              disableBack: true
-            });
-      $state.go('app.main');
-    }
   })
-  .controller('MainCtrl', function($scope, $state, $filter, $stateParams, $http, $ionicLoading, SearchService, $ionicPush) {
+  .controller('MainCtrl', function($scope, $state, $filter, $stateParams, $http, $ionicLoading, DrugService, $ionicPush) {
     //Start here
     $scope.drugs = [];
     $scope.numberOfItemsToDisplay = 10; // Use it with limit to in ng-repeat
-
-    SearchService.GetDrug().then(function(drugs) {
+    //http service
+    DrugService.GetDrug().then(function(drugs) {
       $scope.drugs = drugs;
     });
-
+    //lazy load items
     $scope.addMoreItem = function(done) {
       if ($scope.drugs.length > $scope.numberOfItemsToDisplay)
         $scope.numberOfItemsToDisplay += 10; // load number of more items
       $scope.$broadcast('scroll.infiniteScrollComplete')
     };
 
-
     $scope.search = {};
     $scope.filterByVar = "tradename";
+    //change filter value
     $scope.showSelectValue = function(mySelect) {
       console.log(mySelect);
       if (mySelect == "trade") {
-        console.log("go search trade");
         $scope.filterByVar = "tradename"
       } else if (mySelect == "activeingredient") {
-        console.log("go search activeingredient");
         $scope.filterByVar = "activeingredient"
       } else if (mySelect == "price") {
-        console.log("go search price");
         $scope.filterByVar = "price"
       } else if (mySelect == "company") {
-        console.log("go search company");
         $scope.filterByVar = "company"
       } else if (mySelect == "approximate") {
-        console.log("go search approximate");
         $scope.filterByVar = "tradename"
         $state.go('app.approximate');
       }
     }
+    //push notification
     $ionicPush.register().then(function(t) {
       return $ionicPush.saveToken(t);
     }).then(function(t) {
@@ -115,128 +97,48 @@ angular.module('starter.controllers', [])
     });
   })
 
-.controller('AppCtrl', function($scope) {})
-  /*
-  .controller('LoginCtrl', function($scope, $http, $state) {
-    $scope.user = {};
-    $scope.doLogin = function() {
-    console.log(JSON.stringify($scope.user));
-    $http({
-      url: 'http://api.dawaey.com/api/login.php',
-      method: "POST",
-      data: 'user=' + JSON.stringify($scope.user),
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-      }).success(function (data, status, headers, config) {
-          console.log(data);
-          if (data == "Everything is okay") {
-            //alert("Loging")
-            localStorage.logged = true
-            localStorage.user = JSON.stringify($scope.user)
-            $state.go('app.main');
 
-          }else if (data == "Something wrong with email or password") {
-            alert("Something wrong with email or password")
-          }
-
-      }).error(function (data, status, headers, config) {});
-
-
-    }
-
-  })
-  .controller('SignupCtrl', function($scope, $timeout, $filter, $http, $state) {
-    $scope.user = {};
-    $scope.doSignup = function() {
-      //console.log($scope.user);
-      //console.log($scope.user.date);
-      $scope.user.date = $filter('date')($scope.user.date, "yyyy-MM-dd");
-  //    console.log($scope.user)
-    //  var x = $scope.user
-    //  $.post("http://api.dawaey.com/index.php", { user : x}, function(result){
-    //        alert(result)
-    //      });
-    //console.log(typeof $scope.user);
-  //  var x = $scope.user
-    console.log(JSON.stringify($scope.user));
-    $http({
-      url: 'http://api.dawaey.com/api/signup.php',
-      method: "POST",
-      data: 'user=' + JSON.stringify($scope.user),
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-      }).success(function (data, status, headers, config) {
-          console.log(data);
-          if (data == "Usesr created successfully") {
-            alert("User created successfully")
-            localStorage.logged = true
-            localStorage.user = JSON.stringify($scope.user)
-            $state.go('app.main');
-
-          }else if (data == "Email already exsits") {
-            alert("Email already exists")
-          }
-
-      }).error(function (data, status, headers, config) {});
-
-
-    }
-
-
-  })
-
-  .controller('PrivacyCtrl', function($scope) {
-
-  })
-  */
   .controller('MenuCtrl', function($scope, $state) {
-    // $scope.logOut = function logout() {
-    //   localStorage.clear();
-    //   $state.go('app.intro');
-    //
-    // }
+  })
+  .controller('AppCtrl', function($scope, $state) {
   })
 
+.controller('DrugCtrl', function($scope, $ionicLoading, DrugService, $stateParams) {
+    var id = $stateParams.drugId ;
+    $scope.drug = {};
 
+    //the single drug activeingredient
+    //after the push now it has that drug AI
+    var drugActiveingredient = []
 
-
-.controller('DrugCtrl', function($scope, $stateParams, $http, $ionicLoading, DrugService) {
-    var id = document.URL.split("/drug/")[1];
+    //array of objects of similar drugs
+    $scope.similars = [];
 
     DrugService.GetDrug().then(function(drugs) {
       for (var i = 0; i < drugs.length; i++) {
         if (drugs[i].id == id) {
+          //the $scope.drug is an object of this drug details
           $scope.drug = drugs[i];
+          console.log(drugs[i].activeingredient);
+          drugActiveingredient.push(drugs[i].activeingredient)
         }
       }
-    });
-
-    $scope.similars = [];
-
-    function getSimilars() {
-      var arr = []
-      $scope.similars = [];
-      DrugService.GetDrug().then(function(drugs) {
-
-        for (var i = 0; i < drugs.length; i++) {
-          if (drugs[i].id == id) {
-            $scope.drug = drugs[i];
-          }
-        }
-        arr.push($scope.drug.activeingredient)
-        for (var i = 0; i < drugs.length; i++) {
-          if (arr == drugs[i].activeingredient) {
-            var obj = {
+      console.log(drugActiveingredient);
+      for (var i = 0; i < drugs.length; i++) {
+        if (drugs[i].activeingredient == drugActiveingredient) {
+          console.log(drugs[i])
+          var obj = {
               id: drugs[i].id,
               tradename: drugs[i].tradename
             }
             $scope.similars.push(obj)
             console.log($scope.similars);
-          }
         }
+      }
+    });
 
-      });
 
-    }
-    getSimilars();
+
 
 
 
@@ -252,12 +154,12 @@ angular.module('starter.controllers', [])
   })
 
 
-.controller('QuickCtrl', function($scope, $stateParams, $http, $ionicLoading, SearchService) {
+.controller('QuickCtrl', function($scope, $stateParams, $http, $ionicLoading, DrugService) {
   //Start here
   $scope.drugs = [];
   $scope.numberOfItemsToDisplay = 10; // Use it with limit to in ng-repeat
 
-  SearchService.GetDrug().then(function(drugs) {
+  DrugService.GetDrug().then(function(drugs) {
     $scope.drugs = drugs;
   });
 
