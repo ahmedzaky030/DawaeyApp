@@ -215,18 +215,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 }
 .goicon {
   color: #0cb7ae;
-  -webkit-animation: neon1 0.2s ease-in-out infinite alternate;
-  -moz-animation: neon1 0.2s ease-in-out infinite alternate;
-  animation: neon1 0.2s ease-in-out infinite alternate;
 }
-@-webkit-keyframes neon1 {
-  from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #0cb7ae, 0 0 70px #0cb7ae, 0 0 80px #0cb7ae, 0 0 100px #0cb7ae, 0 0 150px #0cb7ae;
-  }
-  to {
-    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #0cb7ae, 0 0 35px #0cb7ae, 0 0 40px #0cb7ae, 0 0 50px #0cb7ae, 0 0 75px #0cb7ae;
-  }
+.adimg{
+  width: 94%;
+  margin: auto;
+  display: block;
+  padding-top: 10px;
 }
+
 /*.moreinfobtn {
   color: #fff !important;
   background: #0db7ab;

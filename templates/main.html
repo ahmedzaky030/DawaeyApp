@@ -19,15 +19,20 @@
     </div>
     <ion-list>
     </ion-item>
-      <ion-item class="item-light item-avatar card item-complex item-icon-right" collection-repeat="drug in drugs | filter:search | orderBy: filterByVar | limitTo:numberOfItemsToDisplay" ng-href="#/app/drug/{{drug.id}}">
 
-        <img ng-src="{{drug.pic}}" alt=" ">
-        <h2 class="tradename">{{drug.tradename}}</h2>
-        <p class="chname">{{drug.activeingredient}}</p>
-        <i class = "icon icon ion-log-in goicon"></i>
+    <img ng-if="!search[filterByVar].length" class="adimg" src="img/ad.png" alt="" />
+    <img ng-if="!search[filterByVar].length" class="adimg" src="img/ad.gif" alt="" />
+
+      <ion-item class="item-light item-avatar card item-complex item-icon-right" collection-repeat="drug in drugs | filter:search | orderBy: filterByVar | limitTo:numberOfItemsToDisplay" ng-href="#/app/drug/{{drug.id}}">
+          <img ng-src="{{drug.pic}}" alt=" ">
+          <h2 class="tradename">{{drug.tradename}}</h2>
+          <p class="chname">{{drug.activeingredient}}</p>
+          <!-- <p>{{drug.form}}</p> -->
+          <h2 class="newprice">Price: {{drug.newprice}} EGP</h2>
+          <p class="company">Company: {{drug.company}}</p>
+          <i class = "icon icon ion-log-in goicon"></i>
       </ion-item>
     </ion-list>
-    <ion-infinite-scroll ng-if="drugs.length > numberOfItemsToDisplay" on-infinite="addMoreItem() " distance="10% "></ion-infinite-scroll>
-
+    <ion-infinite-scroll ng-if="drugs.length > numberOfItemsToDisplay" on-infinite="addMoreItem() " distance="1%" icon="ion-loading-c"></ion-infinite-scroll>
   </ion-content>
 </ion-view>
