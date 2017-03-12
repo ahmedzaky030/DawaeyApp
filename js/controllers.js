@@ -45,28 +45,23 @@ angular.module('starter.controllers', [])
         $scope.type += content[i];
       else {
         $interval.cancel(timer);
-        console.log('cancelling');
+        // console.log('cancelling');
       }
 
       i++;
       $scope.safeApply();
     }, 100);
   })
-  .controller('MainCtrl', function($scope, $state, $filter, $stateParams, $http, $ionicLoading, DrugService, $ionicPush, $cordovaGoogleAnalytics) {
+  .controller('MainCtrl', function($scope, $state, $filter, $stateParams, $http, $ionicPlatform, $ionicLoading, DrugService, $ionicPush, $cordovaGoogleAnalytics) {
     //Start here
     $scope.drugs = [];
     $scope.numberOfItemsToDisplay = 10; // Use it with limit to in ng-repeat
-    // var drugs = [];
     //http service
+    var drugTradeNames = []
     DrugService.GetDrug().then(function(drugs) {
       // drugs = drugs;
       $scope.drugs = drugs;
-     });
-    // $scope.onSearch = function() {
-    //   $scope.drugs = drugs.filter(function(drug) {
-    //     return drug.tradename.match($scope.search)
-    //   })
-    // }
+    });
 
     //lazy load items
     $scope.addMoreItem = function(done) {
@@ -79,7 +74,7 @@ angular.module('starter.controllers', [])
     $scope.filterByVar = "tradename";
     //change filter value
     $scope.showSelectValue = function(mySelect) {
-      console.log(mySelect);
+      // console.log(mySelect);
       if (mySelect == "trade") {
         $scope.filterByVar = "tradename"
       } else if (mySelect == "activeingredient") {
@@ -97,104 +92,110 @@ angular.module('starter.controllers', [])
     $ionicPush.register().then(function(t) {
       return $ionicPush.saveToken(t);
     }).then(function(t) {
-      console.log('Token saved:', t.token);
+      // console.log('Token saved:', t.token);
     });
     $scope.$on('cloud:push:notification', function(event, data) {
       var msg = data.message;
       alert(msg.title + ': ' + msg.text);
     });
-    //Google Analytics
-    // if (typeof analytics !== 'undefined') {
-    //   $cordovaGoogleAnalytics.trackView('Home Screen');
-    // }
-    // $scope.initEvent = function() {
-    //   if (typeof analytics !== undefined) {
-    //     analytics.trackEvent("Category", "Action", "Label", 25);
-    //   }
-    // }
+
+    /**Start Google Analytics**/
+    $ionicPlatform.ready(function() {
+      if (window.cordova) {
+        if (typeof analytics !== undefined) {
+          analytics.trackView("Main Screen");
+        }
+      }
+    });
+    /**End Google Analytics**/
+    // No ads in the main ?
+    /**Hide Admob ads**/
+    if (window.cordova) {
+      if (window.AdMob) AdMob.hideBanner();
+    }
+    /**End Hide Admob ads**/
 
 
   })
-
-
   .controller('MenuCtrl', function($scope, $state) {})
   .controller('AppCtrl', function($scope, $state) {})
-
-  .controller('DrugCtrl', function($scope, $ionicLoading, DrugService, $stateParams, $cordovaGoogleAnalytics) {
+  .controller('DrugCtrl', function($scope, $state, $ionicLoading, $ionicPlatform, DrugService, $stateParams) {
     var id = $stateParams.drugId;
     $scope.drug = {};
-
-    //the single drug activeingredient
-    //after the push now it has that drug AI
-    var drugActiveingredient = []
-
-    //array of objects of similar drugs
     $scope.similars = [];
-
+    var thisDrugAI = "";
     DrugService.GetDrug().then(function(drugs) {
       for (var i = 0; i < drugs.length; i++) {
         if (drugs[i].id == id) {
-          //the $scope.drug is an object of this drug details
           $scope.drug = drugs[i];
-          //  console.log(drugs[i].activeingredient);
-          console.log($scope.drug.activeingredient);
-          //  console.log(typeof analytics);
-          if (typeof analytics !== 'undefined') {
-            $cordovaGoogleAnalytics.trackView($scope.drug.activeingredient);
-          }
-          drugActiveingredient.push(drugs[i].activeingredient)
+          thisDrugAI = drugs[i].activeingredient;
         }
       }
-      console.log(drugActiveingredient);
       for (var i = 0; i < drugs.length; i++) {
-        if (drugs[i].activeingredient == drugActiveingredient) {
-          console.log(drugs[i])
+        if (drugs[i].activeingredient === thisDrugAI) {
           var obj = {
             id: drugs[i].id,
             tradename: drugs[i].tradename
           }
           $scope.similars.push(obj)
-          console.log($scope.similars);
         }
       }
+
+      /**Start Google Analytics**/
+      if (window.cordova) {
+        if (typeof analytics !== undefined) {
+          analytics.trackView($scope.drug.tradename);
+        }
+      }
+      /**End Google Analytics**/
     });
 
 
-
-
+    /**Display Admob ads**/
+    if (window.cordova) {
+      //Show banner when entering
+      if (window.AdMob) AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);
+      //Show Interstitial when exiting
+      $scope.$on("$destroy", function() {
+        if (window.AdMob) AdMob.showInterstitial();
+      });
+    }
+    /**End Display Admob ads**/
 
   })
   .controller('PartenersCtrl', function($scope, $stateParams) {
-
+    /**Start Google Analytics**/
+    if (window.cordova) {
+      if (typeof analytics !== undefined) {
+        analytics.trackView("Parteners Screen");
+      }
+    }
+    /**End Google Analytics**/
   })
   .controller('SponsorsCtrl', function($scope, $stateParams) {
-
+    /**Start Google Analytics**/
+    if (window.cordova) {
+      if (typeof analytics !== undefined) {
+        analytics.trackView("Sponsors Screen");
+      }
+    }
+    /**End Google Analytics**/
+  })
+  .controller('InteractionsCtrl', function($scope, $stateParams) {
+    /**Start Google Analytics**/
+    if (window.cordova) {
+      if (typeof analytics !== undefined) {
+        analytics.trackView("Interactions Screen");
+      }
+    }
+    /**End Google Analytics**/
   })
   .controller('DeveloperCtrl', function($scope, $stateParams) {
-
-  })
-
-
-  .controller('QuickCtrl', function($scope, $stateParams, $http, $ionicLoading, DrugService) {
-    //Start here
-    $scope.drugs = [];
-    $scope.numberOfItemsToDisplay = 10; // Use it with limit to in ng-repeat
-
-    DrugService.GetDrug().then(function(drugs) {
-      $scope.drugs = drugs;
-    });
-
-    $scope.addMoreItem = function(done) {
-      if ($scope.drugs.length > $scope.numberOfItemsToDisplay)
-        $scope.numberOfItemsToDisplay += 10; // load number of more items
-      $scope.$broadcast('scroll.infiniteScrollComplete')
-    };
-
-  })
-
-  .filter('trustURL', function($sce) {
-    return function(url) {
-      var newurl = 'https://www.google.com/search?q=' + url + ' drug'
-      return $sce.trustAsResourceUrl(newurl);
-    };
+    /**Start Google Analytics**/
+    if (window.cordova) {
+      if (typeof analytics !== undefined) {
+        analytics.trackView("Developer Screen");
+      }
+    }
+    /**End Google Analytics**/
   });

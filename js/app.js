@@ -4,20 +4,20 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'angular.filter', 'starter.controllers', 'starter.services', 'ionic.cloud','ngCordova'])
+angular.module('starter', ['ionic', 'angular.filter', 'starter.controllers', 'starter.services', 'ionic.cloud', 'ngCordova'])
 
 
-.config(function($stateProvider, $urlRouterProvider, $ionicCloudProvider) {
+  .config(function($stateProvider, $urlRouterProvider, $ionicCloudProvider) {
     $stateProvider
 
       .state('app', {
-      url: '/app',
-      abstract: true,
-      templateUrl: 'templates/menu.html',
-      controller: 'AppCtrl'
-    })
+        url: '/app',
+        abstract: true,
+        templateUrl: 'templates/menu.html',
+        controller: 'AppCtrl'
+      })
 
-    .state('app.intro', {
+      .state('app.intro', {
         url: '/intro',
         views: {
           'menuContent': {
@@ -35,6 +35,7 @@ angular.module('starter', ['ionic', 'angular.filter', 'starter.controllers', 'st
           }
         }
       })
+
       .state('app.drug', {
         url: '/drug/:drugId',
         views: {
@@ -44,12 +45,22 @@ angular.module('starter', ['ionic', 'angular.filter', 'starter.controllers', 'st
           }
         }
       })
+
       .state('app.approximate', {
         url: '/approximate',
         views: {
           'menuContent': {
             templateUrl: 'templates/approximate.html',
             controller: 'MainCtrl'
+          }
+        }
+      })
+      .state('app.interactions', {
+        url: '/interactions',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/interactions.html',
+            controller: 'InteractionsCtrl'
           }
         }
       })
@@ -107,32 +118,8 @@ angular.module('starter', ['ionic', 'angular.filter', 'starter.controllers', 'st
     });
 
   })
-  .run(function($rootScope, $ionicPlatform, $ionicHistory) {
-    $ionicPlatform.registerBackButtonAction(function(e) {
-      if ($rootScope.backButtonPressedOnceToExit) {
-        ionic.Platform.exitApp();
-      } else if ($ionicHistory.backView()) {
-        $ionicHistory.goBack();
-      } else {
-        $rootScope.backButtonPressedOnceToExit = true;
-        window.plugins.toast.showShortCenter(
-          "Press back button again to exit",
-          function(a) {},
-          function(b) {}
-        );
-        setTimeout(function() {
-          $rootScope.backButtonPressedOnceToExit = false;
-        }, 2000);
-      }
-      e.preventDefault();
-      return false;
-    }, 101);
-
+  .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
-      //Google analytics
-      if (typeof analytics !== 'undefined') {
-        $cordovaGoogleAnalytics.startTrackerWithId('UA-88642709-1');
-      }
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
       if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -140,10 +127,53 @@ angular.module('starter', ['ionic', 'angular.filter', 'starter.controllers', 'st
         cordova.plugins.Keyboard.disableScroll(true);
 
       }
-
       if (window.StatusBar) {
-        // hide the status bar using the StatusBar plugin
+        // org.apache.cordova.statusbar required
         StatusBar.hide();
       }
+
+      /**Start Wrapping plugins to work on mobile not browser**/
+      if (window.cordova) {
+        /**Start Google Analytics**/
+        if (typeof analytics !== undefined) {
+          analytics.startTrackerWithId("UA-88642709-1");
+          console.log(analytics);
+        } else {
+          console.log("Google Analytics Unavailable");
+        }
+        /**End Google Analytics**/
+
+        /**Start Admob ads**/
+        var admobid = {};
+        // select the right Ad Id according to platform
+        if (/(android)/i.test(navigator.userAgent)) {
+          admobid = { // for Android
+            banner: 'ca-app-pub-4457719262099261/7851493231',
+            interstitial: 'ca-app-pub-4457719262099261/9328226434'
+          };
+        } else if (/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
+          admobid = { // for iOS
+            banner: 'ca-app-pub-4457719262099261/6235159235',
+            interstitial: 'ca-app-pub-4457719262099261/7711892432'
+          };
+        } else {
+          admobid = { // for Windows Phone
+            banner: 'ca-app-pub-4457719262099261/7851493231',
+            interstitial: 'ca-app-pub-4457719262099261/9328226434'
+          };
+        }
+
+        if (AdMob) AdMob.createBanner({
+          adId: admobid.banner,
+          position: AdMob.AD_POSITION.BOTTOM_CENTER,
+          autoShow: false
+        });
+        if (AdMob) AdMob.prepareInterstitial({
+          adId: admobid.interstitial,
+          autoShow: false
+        });
+        /**End Admob ads**/
+      }
+      /**End Wrapping plugins to work on mobile not browser**/
     });
   });

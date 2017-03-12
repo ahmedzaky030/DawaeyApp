@@ -3,13 +3,14 @@
     <div class="shadow">
       <label ng-if="!search[filterByVar].length" class="item item-input lablestyle">
         <select class="selectoptions" name="singleSelect" ng-model="mySelect" ng-change="showSelectValue(mySelect)">
-        <option value="">اختر نوع البحث</option> <!-- not selected / blank option -->
-        <option value="trade">البحث بالاسم التجاري</option>
-        <option value="activeingredient">البحث بالمادة الفعالة</option>
-        <option value="price">البحث بالسعر</option>
-        <option value="company">البحث بالشركة</option>
-        <option value="approximate">البحث التقريبي</option>
-      </select>
+          <option value="">اختر نوع البحث</option>
+          <!-- not selected / blank option -->
+          <option value="trade">البحث بالاسم التجاري</option>
+          <option value="activeingredient">البحث بالمادة الفعالة</option>
+          <option value="price">البحث بالسعر</option>
+          <option value="company">البحث بالشركة</option>
+          <option value="approximate">البحث التقريبي</option>
+        </select>
       </label>
 
       <label class="item item-input">
@@ -17,22 +18,25 @@
         <input type="search" ng-model="search[filterByVar]" placeholder="Search here">
       </label>
     </div>
-    <ion-list>
+    <ion-list></ion-item>
+
+    <!-- <img ng-if="!search[filterByVar].length" class="adimg" src="img/ad.png" alt="" />
+    <img ng-if="!search[filterByVar].length" class="adimg" src="img/ad.gif" alt="" /> -->
+
+    <ion-item class="item-light item-avatar card item-complex item-icon-right" collection-repeat="drug in drugs | filter:search | orderBy: filterByVar | limitTo:numberOfItemsToDisplay" ng-href="#/app/drug/{{drug.id}}">
+      <img src="img/icon.png" alt=" ">
+      <!-- <img ng-src="{{drug.pic}}" alt=" "> -->
+      <h2 class="tradename">{{drug.tradename}}</h2>
+      <p class="chname">{{drug.activeingredient}}</p>
+      <!-- <p>{{drug.form}}</p> -->
+      <h2 class="newprice">Price:
+        {{drug.price}}
+        EGP</h2>
+      <!-- <p class="company">Company:
+        {{drug.company}}</p> -->
+      <i class="icon icon ion-log-in goicon"></i>
     </ion-item>
-
-    <img ng-if="!search[filterByVar].length" class="adimg" src="img/ad.png" alt="" />
-    <img ng-if="!search[filterByVar].length" class="adimg" src="img/ad.gif" alt="" />
-
-      <ion-item class="item-light item-avatar card item-complex item-icon-right" collection-repeat="drug in drugs | filter:search | orderBy: filterByVar | limitTo:numberOfItemsToDisplay" ng-href="#/app/drug/{{drug.id}}">
-          <img ng-src="{{drug.pic}}" alt=" ">
-          <h2 class="tradename">{{drug.tradename}}</h2>
-          <p class="chname">{{drug.activeingredient}}</p>
-          <!-- <p>{{drug.form}}</p> -->
-          <h2 class="newprice">Price: {{drug.newprice}} EGP</h2>
-          <p class="company">Company: {{drug.company}}</p>
-          <i class = "icon icon ion-log-in goicon"></i>
-      </ion-item>
-    </ion-list>
-    <ion-infinite-scroll ng-if="drugs.length > numberOfItemsToDisplay" on-infinite="addMoreItem() " distance="1%" icon="ion-loading-c"></ion-infinite-scroll>
-  </ion-content>
+  </ion-list>
+  <ion-infinite-scroll ng-if="drugs.length > numberOfItemsToDisplay" on-infinite="addMoreItem() " distance="1%" icon="ion-loading-c"></ion-infinite-scroll>
+</ion-content>
 </ion-view>
