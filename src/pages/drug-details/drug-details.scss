@@ -1,0 +1,20 @@
+page-drug-details {
+    .drug-screen{
+        .drug-img{
+            width: 300px;
+            height: 300px;
+            display: block;
+            margin: 0 auto;
+            background-image: url('../../assets/img/placeholder.png');
+            border: 1px solid black;
+        }
+        .title{
+            color: color($colors,darker)
+        }  
+              
+    }
+    .price{
+            color: color($colors,secondary)
+        }
+    
+}

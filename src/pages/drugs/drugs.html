@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-navbar color="darker">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <!-- <ion-title>Search Drugs</ion-title> -->
+    <ion-searchbar placeholder="Search by {{searchBy}}" [(ngModel)]="drugToSearch" (ionInput)="filterDrugs($event)" debounce="500" (keyup.enter)="closeKeyboard()"></ion-searchbar>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="showRadio()">
+        <ion-icon name="options"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title style="display:none">Search Drugs</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="drugs-screen">
+
+  <ion-list [virtualScroll]="drugs" approxItemHeight="64px" bufferRatio="20">
+
+    <ion-item *virtualItem="let drug" class="drug" (click)="openDrug(drug)">
+      <ion-avatar item-left>
+        <img src="assets/img/icon.png">
+      </ion-avatar>
+      <h2>{{ drug.tradename }}</h2>
+      <p>{{ drug.activeingredient }}</p>
+
+      <p *ngIf="searchBy === 'price'">{{ drug.price }}</p>
+      <p *ngIf="searchBy === 'maingp'">{{ drug.maingp }}</p>
+      <p *ngIf="searchBy === 'company'">{{ drug.company }}</p>
+      <p *ngIf="searchBy === 'form'">{{ drug.form }}</p>
+      <p *ngIf="searchBy === 'howmany'">{{ drug.howmany }}</p>
+
+      <ion-icon name="log-in" color="primary" item-right></ion-icon>
+
+    </ion-item>
+  </ion-list>
+  <div *ngIf="drugs.length < 1 && isLoading !== true" text-center>
+    <p>Oops Sorry, We Didn't find <strong>{{drugToSearch}}</strong> you can recheck spelling it... or try:</p>
+    <button ion-button color="secondary" (click)="doApproximate()">Approximate search</button>
+    <p>Or Report it to add it to be added</p>
+    <button ion-button color="dark"><a href="mailto:osama@dawaey.com?subject=Report Missing {{drugToSearch}}">Report Missing</a></button>
+
+
+
+  </div>
+
+
+</ion-content>
